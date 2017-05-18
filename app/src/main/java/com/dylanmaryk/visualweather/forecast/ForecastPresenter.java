@@ -1,7 +1,7 @@
 package com.dylanmaryk.visualweather.forecast;
 
 import com.dylanmaryk.visualweather.lifecycle.LifecycleHandler;
-import com.dylanmaryk.visualweather.models.ForecastResponse;
+import com.dylanmaryk.visualweather.models.Forecast;
 import com.dylanmaryk.visualweather.networking.NetworkService;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,13 +22,13 @@ public class ForecastPresenter implements ForecastContract.Presenter {
   public void start() {
     NetworkService.getNetworkService()
         .getForecast()
-        .compose(lifecycleHandler.<ForecastResponse>bindUntilEvent(ActivityEvent.DESTROY))
+        .compose(lifecycleHandler.<Forecast>bindUntilEvent(ActivityEvent.DESTROY))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribeWith(new DisposableObserver<ForecastResponse>() {
+        .subscribeWith(new DisposableObserver<Forecast>() {
           @Override
-          public void onNext(@NonNull ForecastResponse forecastResponse) {
-            System.out.println(forecastResponse.getTimezone());
+          public void onNext(@NonNull Forecast forecast) {
+            System.out.println(forecast.getTimezone());
           }
 
           @Override

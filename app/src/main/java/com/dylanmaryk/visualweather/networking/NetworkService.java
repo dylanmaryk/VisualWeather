@@ -1,7 +1,7 @@
 package com.dylanmaryk.visualweather.networking;
 
 import com.dylanmaryk.visualweather.BuildConfig;
-import com.dylanmaryk.visualweather.models.ForecastResponse;
+import com.dylanmaryk.visualweather.models.Forecast;
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -25,7 +25,7 @@ public class NetworkService {
     darkSkyService = retrofit.create(DarkSkyService.class);
   }
 
-  public Observable<ForecastResponse> getForecast() {
+  public Observable<Forecast> getForecast() {
     return darkSkyService.getForecast(BuildConfig.DARK_SKY_API_KEY);
   }
 }
