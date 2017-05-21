@@ -7,6 +7,9 @@ interface ForecastContract {
   interface View extends BaseView<Presenter> {
     void setSummary(String summary);
     void setTemperature(String temperature);
+    void showClearWeather();
+    void showRain();
+    void showSnow();
   }
 
   interface Presenter extends BasePresenter {

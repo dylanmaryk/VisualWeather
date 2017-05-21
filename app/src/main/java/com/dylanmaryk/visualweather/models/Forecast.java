@@ -12,4 +12,3 @@ public class Forecast {
     return currentWeather;
   }
 }
-

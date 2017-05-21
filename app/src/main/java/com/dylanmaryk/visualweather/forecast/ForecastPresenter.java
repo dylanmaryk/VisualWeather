@@ -1,5 +1,6 @@
 package com.dylanmaryk.visualweather.forecast;
 
+import com.dylanmaryk.visualweather.enums.WeatherType;
 import com.dylanmaryk.visualweather.lifecycle.LifecycleHandler;
 import com.dylanmaryk.visualweather.models.Forecast;
 import com.dylanmaryk.visualweather.networking.NetworkService;
@@ -36,13 +37,9 @@ public class ForecastPresenter implements ForecastContract.Presenter {
         .subscribeWith(new DisposableObserver<Forecast>() {
           @Override
           public void onNext(@NonNull Forecast forecast) {
-            String summary = forecast.getCurrentWeather().getSummary();
-            view.setSummary(summary);
-
-            float temperatureFloat = forecast.getCurrentWeather().getTemperature();
-            int temperatureRounded = Math.round(temperatureFloat);
-            String temperature = Integer.toString(temperatureRounded);
-            view.setTemperature(temperature);
+            setSummary(forecast.getCurrentWeather().getSummary());
+            setTemperature(forecast.getCurrentWeather().getTemperature());
+            setWeatherType(forecast.getCurrentWeather().getWeatherType());
           }
 
           @Override
@@ -52,8 +49,56 @@ public class ForecastPresenter implements ForecastContract.Presenter {
 
           @Override
           public void onComplete() {
-            System.out.println("Complete");
           }
         });
+  }
+
+  private void setSummary(String summary) {
+    view.setSummary(summary);
+  }
+
+  private void setTemperature(float temperature) {
+    int temperatureRounded = Math.round(temperature);
+    String temperatureString = Integer.toString(temperatureRounded);
+    view.setTemperature(temperatureString);
+  }
+
+  private void setWeatherType(WeatherType weatherType) {
+    if (weatherType == null) {
+      return;
+    }
+
+    switch (weatherType) {
+      case CLEAR_DAY:
+        view.showClearWeather();
+        break;
+      case CLEAR_NIGHT:
+        view.showClearWeather();
+        break;
+      case RAIN:
+        view.showRain();
+        break;
+      case SNOW:
+        view.showSnow();
+        break;
+      case SLEET:
+        view.showSnow();
+        break;
+      case WIND:
+        view.showClearWeather();
+        break;
+      case FOG:
+        view.showClearWeather();
+        break;
+      case CLOUDY:
+        view.showClearWeather();
+        break;
+      case PARTLY_CLOUDY_DAY:
+        view.showClearWeather();
+        break;
+      case PARTLY_CLOUDY_NIGHT:
+        view.showClearWeather();
+        break;
+    }
   }
 }

@@ -1,18 +1,20 @@
 package com.dylanmaryk.visualweather.forecast;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.dylanmaryk.visualweather.R;
+import xyz.matteobattilana.library.Common.Constants;
+import xyz.matteobattilana.library.WeatherView;
 
 public class ForecastFragment extends Fragment implements ForecastContract.View {
+  @BindView(R.id.weatherView)
+  WeatherView weatherView;
   @BindView(R.id.summaryText)
   TextView summaryText;
   @BindView(R.id.temperatureText)
@@ -57,5 +59,23 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   @Override
   public void setTemperature(String temperature) {
     temperateText.setText(temperature);
+  }
+
+  @Override
+  public void showClearWeather() {
+    weatherView.setWeather(Constants.weatherStatus.SUN);
+    weatherView.startAnimation();
+  }
+
+  @Override
+  public void showRain() {
+    weatherView.setWeather(Constants.weatherStatus.RAIN);
+    weatherView.startAnimation();
+  }
+
+  @Override
+  public void showSnow() {
+    weatherView.setWeather(Constants.weatherStatus.SNOW);
+    weatherView.startAnimation();
   }
 }

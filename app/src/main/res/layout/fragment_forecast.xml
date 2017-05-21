@@ -1,25 +1,49 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.dylanmaryk.visualweather.forecast.ForecastFragment"
+    android:background="@android:color/holo_blue_dark"
     >
 
-  <TextView
-      android:id="@+id/temperatureText"
+  <xyz.matteobattilana.library.WeatherView
+      android:id="@+id/weatherView"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_weight="3"
-      android:gravity="center"
-      android:text="8"
+      android:layout_height="1dp"
+      app:angle="-3"
+      app:fadeOutTime="1000"
+      app:fps="40"
+      app:lifeTime="3000"
+      app:numParticles="55"
+      app:orientationMode="ENABLE"
       />
-  <TextView
-      android:id="@+id/summaryText"
+
+  <LinearLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:gravity="center"
-      android:text="Nice weather we're having"
-      />
-</LinearLayout>
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      tools:context="com.dylanmaryk.visualweather.forecast.ForecastFragment"
+      >
+
+    <TextView
+        android:id="@+id/temperatureText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:text="8"
+        />
+
+    <TextView
+        android:id="@+id/summaryText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Nice weather we're having"
+        />
+  </LinearLayout>
+
+</RelativeLayout>
