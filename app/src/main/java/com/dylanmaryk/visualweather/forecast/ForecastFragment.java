@@ -13,10 +13,10 @@ import butterknife.ButterKnife;
 import com.dylanmaryk.visualweather.R;
 
 public class ForecastFragment extends Fragment implements ForecastContract.View {
-  @BindView(R.id.temperatureText)
-  TextView temperateText;
   @BindView(R.id.summaryText)
   TextView summaryText;
+  @BindView(R.id.temperatureText)
+  TextView temperateText;
 
   private ForecastContract.Presenter presenter;
 
@@ -47,5 +47,15 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   @Override
   public void setPresenter(ForecastContract.Presenter presenter) {
     this.presenter = presenter;
+  }
+
+  @Override
+  public void setSummary(String summary) {
+    summaryText.setText(summary);
+  }
+
+  @Override
+  public void setTemperature(String temperature) {
+    temperateText.setText(temperature);
   }
 }

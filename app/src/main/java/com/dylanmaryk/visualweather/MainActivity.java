@@ -9,7 +9,7 @@ import com.dylanmaryk.visualweather.lifecycle.LifecycleHandler;
 public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    LifecycleHandler lifecycleHandler = new LifecycleHandler(this.getApplication());
+    LifecycleHandler lifecycleHandler = new LifecycleHandler(getApplication());
 
     super.onCreate(savedInstanceState);
 

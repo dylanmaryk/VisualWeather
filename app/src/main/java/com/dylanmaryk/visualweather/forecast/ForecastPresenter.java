@@ -20,6 +20,14 @@ public class ForecastPresenter implements ForecastContract.Presenter {
 
   @Override
   public void start() {
+    requestForecast();
+  }
+
+  @Override
+  public void stop() {
+  }
+
+  private void requestForecast() {
     NetworkService.getNetworkService()
         .getForecast()
         .compose(lifecycleHandler.<Forecast>bindUntilEvent(ActivityEvent.DESTROY))
@@ -28,7 +36,13 @@ public class ForecastPresenter implements ForecastContract.Presenter {
         .subscribeWith(new DisposableObserver<Forecast>() {
           @Override
           public void onNext(@NonNull Forecast forecast) {
-            System.out.println(forecast.getTimezone());
+            String summary = forecast.getCurrentWeather().getSummary();
+            view.setSummary(summary);
+
+            float temperatureFloat = forecast.getCurrentWeather().getTemperature();
+            int temperatureRounded = Math.round(temperatureFloat);
+            String temperature = Integer.toString(temperatureRounded);
+            view.setTemperature(temperature);
           }
 
           @Override
@@ -41,9 +55,5 @@ public class ForecastPresenter implements ForecastContract.Presenter {
             System.out.println("Complete");
           }
         });
-  }
-
-  @Override
-  public void stop() {
   }
 }

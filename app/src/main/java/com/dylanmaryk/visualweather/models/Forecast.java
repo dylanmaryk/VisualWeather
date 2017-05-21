@@ -1,12 +1,15 @@
 package com.dylanmaryk.visualweather.models;
 
+import com.google.gson.annotations.SerializedName;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class Forecast {
-  private String timezone;
+  @SerializedName("currently")
+  private CurrentWeather currentWeather;
 
-  public String getTimezone() {
-    return timezone;
+  public CurrentWeather getCurrentWeather() {
+    return currentWeather;
   }
 }
+
