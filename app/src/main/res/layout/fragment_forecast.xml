@@ -6,6 +6,14 @@
     android:background="@android:color/holo_blue_dark"
     >
 
+  <ViewFlipper
+      android:id="@+id/viewFlipper"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:autoStart="true"
+      android:flipInterval="10000"
+      />
+
   <xyz.matteobattilana.library.WeatherView
       android:id="@+id/weatherView"
       android:layout_width="match_parent"
