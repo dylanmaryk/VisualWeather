@@ -1,5 +1,6 @@
 package com.dylanmaryk.visualweather.forecast;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,12 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.dylanmaryk.visualweather.R;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import xyz.matteobattilana.library.Common.Constants;
 import xyz.matteobattilana.library.WeatherView;
 
@@ -25,11 +31,12 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   @BindView(R.id.temperatureText)
   TextView temperateText;
 
-  private ForecastContract.Presenter presenter;
+  private ForecastContract.Presenter forecastPresenter;
+  private static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
+                           Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_forecast, container, false);
     ButterKnife.bind(this, view);
     return view;
@@ -38,18 +45,18 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   @Override
   public void onResume() {
     super.onResume();
-    presenter.start();
+    forecastPresenter.start();
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
-    presenter.stop();
+    forecastPresenter.stop();
   }
 
   @Override
   public void setPresenter(ForecastContract.Presenter presenter) {
-    this.presenter = presenter;
+    forecastPresenter = presenter;
   }
 
   @Override
@@ -85,5 +92,26 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
     ImageView imageView = new ImageView(getActivity());
     imageView.setImageBitmap(photo);
     viewFlipper.addView(imageView);
+  }
+
+  @OnClick(R.id.searchButton)
+  public void searchButtonClick() {
+    forecastPresenter.setupPlaceAutocomplete();
+  }
+
+  @Override
+  public void showPlaceAutocomplete(PlaceAutocomplete.IntentBuilder intentBuilder) {
+    try {
+      Intent intent = intentBuilder.build(getActivity());
+      startActivityForResult(intent, ForecastFragment.PLACE_AUTOCOMPLETE_REQUEST_CODE);
+    } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+    System.out.println(place);
   }
 }

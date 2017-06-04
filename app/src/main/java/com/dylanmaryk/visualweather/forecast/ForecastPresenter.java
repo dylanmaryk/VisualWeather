@@ -7,6 +7,8 @@ import com.dylanmaryk.visualweather.lifecycle.LifecycleHandler;
 import com.dylanmaryk.visualweather.models.Forecast;
 import com.dylanmaryk.visualweather.models.LocationPhoto;
 import com.dylanmaryk.visualweather.networking.NetworkService;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -37,7 +39,8 @@ public class ForecastPresenter implements ForecastContract.Presenter {
   }
 
   private void requestForecast() {
-    NetworkService.getNetworkService()
+    NetworkService
+        .getNetworkService()
         .getForecast()
         .compose(lifecycleHandler.<Forecast>bindUntilEvent(ActivityEvent.DESTROY))
         .subscribeOn(Schedulers.io())
@@ -66,7 +69,8 @@ public class ForecastPresenter implements ForecastContract.Presenter {
   }
 
   private void requestLocationPhotos() {
-    NetworkService.getNetworkService()
+    NetworkService
+        .getNetworkService()
         .getLocationPhotos()
         .flatMapIterable(locationPhoto -> locationPhoto)
         .compose(lifecycleHandler.<LocationPhoto>bindUntilEvent(ActivityEvent.DESTROY))
@@ -158,5 +162,16 @@ public class ForecastPresenter implements ForecastContract.Presenter {
       public void onLoadingCancelled(String imageUri, View view) {
       }
     });
+  }
+
+  @Override
+  public void setupPlaceAutocomplete() {
+    AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
+        .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+        .build();
+    PlaceAutocomplete.IntentBuilder intentBuilder =
+        new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(
+            autocompleteFilter);
+    forecastView.showPlaceAutocomplete(intentBuilder);
   }
 }

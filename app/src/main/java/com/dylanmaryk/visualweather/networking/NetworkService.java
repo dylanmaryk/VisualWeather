@@ -25,7 +25,8 @@ public class NetworkService {
   }
 
   private void createDarkSkyService() {
-    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.darksky.net")
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl("https://api.darksky.net")
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build();
@@ -33,7 +34,8 @@ public class NetworkService {
   }
 
   private void createFiveHundredPxService() {
-    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.500px.com")
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl("https://api.500px.com")
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build();
@@ -45,7 +47,8 @@ public class NetworkService {
   }
 
   public Observable<ArrayList<LocationPhoto>> getLocationPhotos() {
-    return fiveHundredPxService.getLocationPhotosWrapper(BuildConfig.FIVE_HUNDRED_PX_API_KEY)
+    return fiveHundredPxService
+        .getLocationPhotosWrapper(BuildConfig.FIVE_HUNDRED_PX_API_KEY)
         .map(locationPhotosWrapper -> locationPhotosWrapper.getLocationPhotos());
   }
 }
