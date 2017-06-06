@@ -55,7 +55,9 @@ public class NetworkService {
     LatLng latLng = location.getLatLng();
     String latLngRadiusString = latLng.latitude + "," + latLng.longitude + ",5km";
     return fiveHundredPxService
-        .getLocationPhotosWrapper(BuildConfig.FIVE_HUNDRED_PX_API_KEY, latLngRadiusString)
+        .getLocationPhotosWrapper(BuildConfig.FIVE_HUNDRED_PX_API_KEY,
+                                  latLngRadiusString,
+                                  location.getName())
         .map(LocationPhotosWrapper::getLocationPhotos);
   }
 }

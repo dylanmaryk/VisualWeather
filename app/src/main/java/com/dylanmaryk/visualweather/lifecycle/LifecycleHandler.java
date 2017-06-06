@@ -19,8 +19,8 @@ public class LifecycleHandler {
     application.registerActivityLifecycleCallbacks(lifecycleCallbacks);
   }
 
-  public <T> ObservableTransformer<? super T, ? extends T> bindUntilEvent(
-      ActivityEvent activityEvent) {
+  public <T> ObservableTransformer<? super T, ? extends T> bindUntilEvent(ActivityEvent
+                                                                              activityEvent) {
     return RxLifecycle.bindUntilEvent(activeSubject, activityEvent);
   }
 

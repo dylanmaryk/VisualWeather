@@ -8,5 +8,6 @@ import retrofit2.http.Query;
 interface FiveHundredPxService {
   @GET("v1/photos/search?sort=highest_rating&image_size=2048&rpp=3")
   Observable<LocationPhotosWrapper> getLocationPhotosWrapper(@Query("consumer_key") String key,
-                                                             @Query("geo") String latLng);
+                                                             @Query("geo") String latLng,
+                                                             @Query("term") String name);
 }

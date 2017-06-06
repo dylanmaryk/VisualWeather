@@ -41,7 +41,7 @@ public class ForecastPresenter implements ForecastContract.Presenter {
 
   @Override
   public void requestForecast(Place place) {
-    Location location = new Location(place.getLatLng());
+    Location location = new Location(place.getName(), place.getLatLng());
     requestForecast(location);
     requestPhotos(location);
   }

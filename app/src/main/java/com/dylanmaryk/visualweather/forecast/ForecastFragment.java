@@ -35,7 +35,8 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   private static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(LayoutInflater inflater,
+                           ViewGroup container,
                            Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_forecast, container, false);
     ButterKnife.bind(this, view);
