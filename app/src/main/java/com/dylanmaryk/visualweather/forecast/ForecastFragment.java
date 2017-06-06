@@ -112,6 +112,6 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-    System.out.println(place);
+    forecastPresenter.requestForecast(place);
   }
 }

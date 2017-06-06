@@ -3,6 +3,7 @@ package com.dylanmaryk.visualweather.forecast;
 import android.graphics.Bitmap;
 import com.dylanmaryk.visualweather.BasePresenter;
 import com.dylanmaryk.visualweather.BaseView;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 interface ForecastContract {
@@ -23,6 +24,8 @@ interface ForecastContract {
   }
 
   interface Presenter extends BasePresenter {
+    void requestForecast(Place place);
+
     void setupPlaceAutocomplete();
   }
 }

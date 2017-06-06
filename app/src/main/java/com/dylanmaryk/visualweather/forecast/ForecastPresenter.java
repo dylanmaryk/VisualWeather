@@ -4,10 +4,13 @@ import android.graphics.Bitmap;
 import android.view.View;
 import com.dylanmaryk.visualweather.enums.WeatherType;
 import com.dylanmaryk.visualweather.lifecycle.LifecycleHandler;
+import com.dylanmaryk.visualweather.models.CurrentWeather;
 import com.dylanmaryk.visualweather.models.Forecast;
+import com.dylanmaryk.visualweather.models.Location;
 import com.dylanmaryk.visualweather.models.LocationPhoto;
 import com.dylanmaryk.visualweather.networking.NetworkService;
 import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -30,18 +33,23 @@ public class ForecastPresenter implements ForecastContract.Presenter {
 
   @Override
   public void start() {
-    requestForecast();
-    requestLocationPhotos();
   }
 
   @Override
   public void stop() {
   }
 
-  private void requestForecast() {
+  @Override
+  public void requestForecast(Place place) {
+    Location location = new Location(place.getLatLng());
+    requestForecast(location);
+    requestPhotos(location);
+  }
+
+  private void requestForecast(Location location) {
     NetworkService
         .getNetworkService()
-        .getForecast()
+        .getForecast(location)
         .compose(lifecycleHandler.<Forecast>bindUntilEvent(ActivityEvent.DESTROY))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -52,14 +60,15 @@ public class ForecastPresenter implements ForecastContract.Presenter {
 
           @Override
           public void onNext(@NonNull Forecast forecast) {
-            setSummary(forecast.getCurrentWeather().getSummary());
-            setTemperature(forecast.getCurrentWeather().getTemperature());
-            setWeatherType(forecast.getCurrentWeather().getWeatherType());
+            CurrentWeather currentWeather = forecast.getCurrentWeather();
+            setSummary(currentWeather.getSummary());
+            setTemperature(currentWeather.getTemperature());
+            setWeatherType(currentWeather.getWeatherType());
           }
 
           @Override
           public void onError(@NonNull Throwable e) {
-            System.out.println(e);
+            e.printStackTrace();
           }
 
           @Override
@@ -68,10 +77,10 @@ public class ForecastPresenter implements ForecastContract.Presenter {
         });
   }
 
-  private void requestLocationPhotos() {
+  private void requestPhotos(Location location) {
     NetworkService
         .getNetworkService()
-        .getLocationPhotos()
+        .getPhotos(location)
         .flatMapIterable(locationPhoto -> locationPhoto)
         .compose(lifecycleHandler.<LocationPhoto>bindUntilEvent(ActivityEvent.DESTROY))
         .subscribeOn(Schedulers.io())
@@ -88,7 +97,7 @@ public class ForecastPresenter implements ForecastContract.Presenter {
 
           @Override
           public void onError(@NonNull Throwable e) {
-            System.out.println(e);
+            e.printStackTrace();
           }
 
           @Override

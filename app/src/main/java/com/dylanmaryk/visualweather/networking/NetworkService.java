@@ -2,7 +2,10 @@ package com.dylanmaryk.visualweather.networking;
 
 import com.dylanmaryk.visualweather.BuildConfig;
 import com.dylanmaryk.visualweather.models.Forecast;
+import com.dylanmaryk.visualweather.models.Location;
 import com.dylanmaryk.visualweather.models.LocationPhoto;
+import com.dylanmaryk.visualweather.models.LocationPhotosWrapper;
+import com.google.android.gms.maps.model.LatLng;
 import io.reactivex.Observable;
 import java.util.ArrayList;
 import retrofit2.Retrofit;
@@ -42,13 +45,17 @@ public class NetworkService {
     fiveHundredPxService = retrofit.create(FiveHundredPxService.class);
   }
 
-  public Observable<Forecast> getForecast() {
-    return darkSkyService.getForecast(BuildConfig.DARK_SKY_API_KEY);
+  public Observable<Forecast> getForecast(Location location) {
+    LatLng latLng = location.getLatLng();
+    String latLngString = latLng.latitude + "," + latLng.longitude;
+    return darkSkyService.getForecast(BuildConfig.DARK_SKY_API_KEY, latLngString);
   }
 
-  public Observable<ArrayList<LocationPhoto>> getLocationPhotos() {
+  public Observable<ArrayList<LocationPhoto>> getPhotos(Location location) {
+    LatLng latLng = location.getLatLng();
+    String latLngRadiusString = latLng.latitude + "," + latLng.longitude + ",5km";
     return fiveHundredPxService
-        .getLocationPhotosWrapper(BuildConfig.FIVE_HUNDRED_PX_API_KEY)
-        .map(locationPhotosWrapper -> locationPhotosWrapper.getLocationPhotos());
+        .getLocationPhotosWrapper(BuildConfig.FIVE_HUNDRED_PX_API_KEY, latLngRadiusString)
+        .map(LocationPhotosWrapper::getLocationPhotos);
   }
 }
