@@ -94,6 +94,11 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
     viewFlipper.addView(imageView);
   }
 
+  @Override
+  public void clearPhotos() {
+    viewFlipper.removeAllViews();
+  }
+
   @OnClick(R.id.searchButton)
   public void searchButtonClick() {
     forecastPresenter.setupPlaceAutocomplete();

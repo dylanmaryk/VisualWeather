@@ -20,6 +20,8 @@ interface ForecastContract {
 
     void addPhoto(Bitmap photo);
 
+    void clearPhotos();
+
     void showPlaceAutocomplete(PlaceAutocomplete.IntentBuilder intentBuilder);
   }
 

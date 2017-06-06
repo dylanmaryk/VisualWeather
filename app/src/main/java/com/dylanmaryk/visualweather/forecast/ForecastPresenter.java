@@ -88,6 +88,7 @@ public class ForecastPresenter implements ForecastContract.Presenter {
         .subscribe(new Observer<LocationPhoto>() {
           @Override
           public void onSubscribe(@NonNull Disposable d) {
+            clearPhotos();
           }
 
           @Override
@@ -171,6 +172,10 @@ public class ForecastPresenter implements ForecastContract.Presenter {
       public void onLoadingCancelled(String imageUri, View view) {
       }
     });
+  }
+
+  private void clearPhotos() {
+    forecastView.clearPhotos();
   }
 
   @Override
