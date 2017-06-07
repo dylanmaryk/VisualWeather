@@ -43,7 +43,6 @@ public class ForecastPresenter implements ForecastContract.Presenter {
   public void requestForecast(Place place) {
     Location location = new Location(place.getName(), place.getLatLng());
     requestForecast(location);
-    requestPhotos(location);
   }
 
   private void requestForecast(Location location) {
@@ -64,6 +63,7 @@ public class ForecastPresenter implements ForecastContract.Presenter {
             setSummary(currentWeather.getSummary());
             setTemperature(currentWeather.getTemperature());
             setWeatherType(currentWeather.getWeatherType());
+            requestPhotos(location, currentWeather.getWeatherType());
           }
 
           @Override
@@ -77,10 +77,10 @@ public class ForecastPresenter implements ForecastContract.Presenter {
         });
   }
 
-  private void requestPhotos(Location location) {
+  private void requestPhotos(Location location, WeatherType weatherType) {
     NetworkService
         .getNetworkService()
-        .getPhotos(location)
+        .getPhotos(location, weatherType)
         .flatMapIterable(locationPhoto -> locationPhoto)
         .compose(lifecycleHandler.<LocationPhoto>bindUntilEvent(ActivityEvent.DESTROY))
         .subscribeOn(Schedulers.io())

@@ -1,6 +1,7 @@
 package com.dylanmaryk.visualweather.networking;
 
 import com.dylanmaryk.visualweather.BuildConfig;
+import com.dylanmaryk.visualweather.enums.WeatherType;
 import com.dylanmaryk.visualweather.models.Forecast;
 import com.dylanmaryk.visualweather.models.Location;
 import com.dylanmaryk.visualweather.models.LocationPhoto;
@@ -51,13 +52,42 @@ public class NetworkService {
     return darkSkyService.getForecast(BuildConfig.DARK_SKY_API_KEY, latLngString);
   }
 
-  public Observable<ArrayList<LocationPhoto>> getPhotos(Location location) {
+  public Observable<ArrayList<LocationPhoto>> getPhotos(Location location,
+                                                        WeatherType weatherType) {
     LatLng latLng = location.getLatLng();
     String latLngRadiusString = latLng.latitude + "," + latLng.longitude + ",5km";
+    String searchTerm = location.getName() + " " + weatherSearchTerm(weatherType);
     return fiveHundredPxService
         .getLocationPhotosWrapper(BuildConfig.FIVE_HUNDRED_PX_API_KEY,
                                   latLngRadiusString,
-                                  location.getName())
+                                  searchTerm)
         .map(LocationPhotosWrapper::getLocationPhotos);
+  }
+
+  private String weatherSearchTerm(WeatherType weatherType) {
+    switch (weatherType) {
+      case CLEAR_DAY:
+        return "clear day";
+      case CLEAR_NIGHT:
+        return "clear night";
+      case RAIN:
+        return "rain";
+      case SNOW:
+        return "snow";
+      case SLEET:
+        return "snow";
+      case WIND:
+        return "wind";
+      case FOG:
+        return "fog";
+      case CLOUDY:
+        return "cloudy";
+      case PARTLY_CLOUDY_DAY:
+        return "cloudy day";
+      case PARTLY_CLOUDY_NIGHT:
+        return "cloudy night";
+      default:
+        return "";
+    }
   }
 }
