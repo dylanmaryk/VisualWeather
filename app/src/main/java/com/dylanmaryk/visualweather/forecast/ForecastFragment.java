@@ -7,12 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.cesards.cropimageview.CropImageView;
 import com.dylanmaryk.visualweather.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -90,8 +90,9 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
 
   @Override
   public void addPhoto(Bitmap photo) {
-    ImageView imageView = new ImageView(getActivity());
+    CropImageView imageView = new CropImageView(getActivity());
     imageView.setImageBitmap(photo);
+    imageView.setCropType(CropImageView.CropType.LEFT_CENTER);
     viewFlipper.addView(imageView);
   }
 
