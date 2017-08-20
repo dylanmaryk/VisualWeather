@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import butterknife.BindView;
@@ -32,6 +34,7 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   TextView temperateText;
 
   private ForecastContract.Presenter forecastPresenter;
+  private static long FADE_ANIMATION_DURATION = 3000;
   private static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
   @Override
@@ -40,6 +43,7 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
                            Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_forecast, container, false);
     ButterKnife.bind(this, view);
+    setupViewFlipperAnimations();
     return view;
   }
 
@@ -53,6 +57,16 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   public void onDestroy() {
     super.onDestroy();
     forecastPresenter.stop();
+  }
+
+  private void setupViewFlipperAnimations() {
+    Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+    Animation fadeOutAnimation =
+        AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+    fadeInAnimation.setDuration(ForecastFragment.FADE_ANIMATION_DURATION);
+    fadeOutAnimation.setDuration(ForecastFragment.FADE_ANIMATION_DURATION);
+    viewFlipper.setInAnimation(fadeInAnimation);
+    viewFlipper.setOutAnimation(fadeOutAnimation);
   }
 
   @Override
