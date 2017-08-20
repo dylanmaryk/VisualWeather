@@ -9,6 +9,7 @@ import com.dylanmaryk.visualweather.models.Forecast;
 import com.dylanmaryk.visualweather.models.Location;
 import com.dylanmaryk.visualweather.models.LocationPhoto;
 import com.dylanmaryk.visualweather.networking.NetworkService;
+import com.dylanmaryk.visualweather.storage.DataStorage;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -25,23 +26,39 @@ import io.reactivex.schedulers.Schedulers;
 public class ForecastPresenter implements ForecastContract.Presenter {
   private final ForecastContract.View forecastView;
   private final LifecycleHandler lifecycleHandler;
+  private final DataStorage dataStorage;
 
-  public ForecastPresenter(ForecastContract.View view, LifecycleHandler lifecycleHandler) {
+  public ForecastPresenter(ForecastContract.View view,
+                           LifecycleHandler lifecycleHandler,
+                           DataStorage dataStorage) {
     this.forecastView = view;
     this.lifecycleHandler = lifecycleHandler;
+    this.dataStorage = dataStorage;
   }
 
   @Override
   public void start() {
+    requestForecastForStoredLocation();
   }
 
   @Override
   public void stop() {
   }
 
+  private void requestForecastForStoredLocation() {
+    Location location = dataStorage.getLocation();
+
+    if (location != null) {
+      requestForecast(location);
+    } else {
+      setupPlaceAutocomplete();
+    }
+  }
+
   @Override
   public void requestForecast(Place place) {
     Location location = new Location(place.getName(), place.getLatLng());
+    dataStorage.saveLocation(location);
     requestForecast(location);
   }
 

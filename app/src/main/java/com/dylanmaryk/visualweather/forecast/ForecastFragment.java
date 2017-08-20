@@ -16,6 +16,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.cesards.cropimageview.CropImageView;
 import com.dylanmaryk.visualweather.R;
+import com.dylanmaryk.visualweather.models.Location;
+import com.dylanmaryk.visualweather.storage.DataStorage;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -63,8 +65,8 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
     Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
     Animation fadeOutAnimation =
         AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-    fadeInAnimation.setDuration(ForecastFragment.FADE_ANIMATION_DURATION);
-    fadeOutAnimation.setDuration(ForecastFragment.FADE_ANIMATION_DURATION);
+    fadeInAnimation.setDuration(FADE_ANIMATION_DURATION);
+    fadeOutAnimation.setDuration(FADE_ANIMATION_DURATION);
     viewFlipper.setInAnimation(fadeInAnimation);
     viewFlipper.setOutAnimation(fadeOutAnimation);
   }
@@ -124,7 +126,7 @@ public class ForecastFragment extends Fragment implements ForecastContract.View 
   public void showPlaceAutocomplete(PlaceAutocomplete.IntentBuilder intentBuilder) {
     try {
       Intent intent = intentBuilder.build(getActivity());
-      startActivityForResult(intent, ForecastFragment.PLACE_AUTOCOMPLETE_REQUEST_CODE);
+      startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
     } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
       e.printStackTrace();
     }
